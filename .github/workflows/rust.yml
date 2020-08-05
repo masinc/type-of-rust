@@ -10,47 +10,11 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  ubuntu:
-    runs-on: ubuntu-latest
+  cargo:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        rust:
-          - stable
-          - beta
-          - nightly
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
-      with:
-        toolchain: ${{ matrix.rust }}
-        profile: minimal
-        override: true
-        components: rustfmt, clippy
-    - name: build
-      uses: actions-rs/cargo@v1
-      with:
-        command: build
-        args: -v
-    - name: test
-      uses: actions-rs/cargo@v1
-      with:
-        command: test
-        args: -v
-    - name: fmt
-      uses: actions-rs/cargo@v1
-      with:
-        command: fmt
-        args: --all -- --check
-    - name: fmt
-      uses: actions-rs/cargo@v1
-      with:
-        command: clippy
-        args: -- -D warnings
-
-  windows:
-    runs-on: windows-latest
-    strategy:
-      matrix:
+        os: [windows-latest, ubuntu-latest]
         rust:
           - stable
           - beta

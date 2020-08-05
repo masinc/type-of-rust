@@ -20,26 +20,29 @@ jobs:
           - nightly
     steps:
     - uses: actions/checkout@v2
-    - name: stable
-      uses: actions-rs/toolchain@v1
+    - uses: actions-rs/toolchain@v1
       with:
         toolchain: ${{ matrix.rust }}
         profile: minimal
         override: true
         components: rustfmt, clippy
-    - uses: actions-rs/cargo@v1
+    - name: build
+      uses: actions-rs/cargo@v1
       with:
         command: build
         args: -v
-    - uses: actions-rs/cargo@v1
+    - name: test
+      uses: actions-rs/cargo@v1
       with:
         command: test
         args: -v
-    - uses: actions-rs/cargo@v1
+    - name: fmt
+      uses: actions-rs/cargo@v1
       with:
         command: fmt
         args: --all -- --check
-    - uses: actions-rs/cargo@v1
+    - name: fmt
+      uses: actions-rs/cargo@v1
       with:
         command: clippy
         args: -- -D warnings
@@ -54,26 +57,29 @@ jobs:
           - nightly
     steps:
     - uses: actions/checkout@v2
-    - name: stable
-      uses: actions-rs/toolchain@v1
+    - uses: actions-rs/toolchain@v1
       with:
         toolchain: ${{ matrix.rust }}
         profile: minimal
         override: true
         components: rustfmt, clippy
-    - uses: actions-rs/cargo@v1
+    - name: build
+      uses: actions-rs/cargo@v1
       with:
         command: build
         args: -v
-    - uses: actions-rs/cargo@v1
+    - name: test
+      uses: actions-rs/cargo@v1
       with:
         command: test
         args: -v
-    - uses: actions-rs/cargo@v1
+    - name: fmt
+      uses: actions-rs/cargo@v1
       with:
         command: fmt
         args: --all -- --check
-    - uses: actions-rs/cargo@v1
+    - name: fmt
+      uses: actions-rs/cargo@v1
       with:
         command: clippy
         args: -- -D warnings

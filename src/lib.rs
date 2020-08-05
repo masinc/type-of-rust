@@ -19,7 +19,7 @@ impl Type {
         const DOUBLE_COLLON: &str = "::";
         let s: &str = &self.full_name;
 
-        let end = s.find("<").unwrap_or(s.len());
+        let end = s.find('<').unwrap_or_else(|| s.len());
         let s = &s[..(end)];
 
         let start = s
@@ -37,13 +37,13 @@ impl Type {
     pub fn generics(&self) -> Option<Vec<Type>> {
         let s: &str = &self.full_name;
 
-        let start = s.find("<");
-        let end = s.rfind(">");
+        let start = s.find('<');
+        let end = s.rfind('>');
         match (start, end) {
             (Some(start), Some(end)) => {
                 let s = &s[(start + 1)..(end)];
                 let v = s
-                    .split(",")
+                    .split(',')
                     .map(|s| s.trim())
                     .map(Type::from_string)
                     .collect();

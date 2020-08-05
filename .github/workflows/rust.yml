@@ -1,0 +1,79 @@
+name: Rust
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+    steps:
+    - uses: actions/checkout@v2
+    - name: stable
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.rust }}
+        profile: minimal
+        override: true
+        components: rustfmt, clippy
+    - uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: -v
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: -v
+    - uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: --all -- --check
+    - uses: actions-rs/cargo@v1
+      with:
+        command: clippy
+        args: -- -D warnings
+
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+    steps:
+    - uses: actions/checkout@v2
+    - name: stable
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.rust }}
+        profile: minimal
+        override: true
+        components: rustfmt, clippy
+    - uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: -v
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: -v
+    - uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: --all -- --check
+    - uses: actions-rs/cargo@v1
+      with:
+        command: clippy
+        args: -- -D warnings
